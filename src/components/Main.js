@@ -1,12 +1,6 @@
 import { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
 import Admin from './Admin';
-
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.REACT_APP_SUPABASE_URL,
-  process.env.REACT_APP_SUPABASE_KEY
-);
 
 const Main = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,12 +25,13 @@ const Main = () => {
 
     const mySubscription = supabase
       .from('*')
-      .on('*', (payload) => {
-        console.log('Change received!', payload);
+      .on('UPDATE', (payload) => {
         handleSubscription(payload);
       })
       .subscribe();
 
+    // if your effect returns a function, React will run it when it is time to clean up
+    // https://reactjs.org/docs/hooks-effect.html#example-using-hooks-1
     return () => {
       supabase.removeSubscription(mySubscription);
     };
