@@ -14,8 +14,8 @@ fastify.register(require('fastify-postgres'), {
 });
 
 fastify
-  .register(require('./services/locations'))
-  .register(require('./services/users'));
+  .register(require('./services/location'))
+  .register(require('./services/user'));
 
 fastify.get('/', async (request, reply) => {
   return { status: 'ok' };
